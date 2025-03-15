@@ -1,0 +1,11 @@
+version: "8.4-RELEASE"
+architecture: "amd64"
+
+archive_url: "http://ftp-archive.freebsd.org/pub/FreeBSD-Archive/old-releases"
+
+components:
+  - directory: "kernels"
+    file_prefix: "generic"
+
+  - directory: "base"
+    file_prefix: "base"
