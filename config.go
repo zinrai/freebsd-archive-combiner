@@ -1,11 +1,11 @@
-package config
+package main
 
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 
-	"gopkg.in/yaml.v2"
+	"github.com/goccy/go-yaml"
 )
 
 type Config struct {
@@ -56,8 +56,8 @@ func LoadConfig(filePath string) (*Config, error) {
 	return &config, nil
 }
 
-func EnsureOutputDirs(config *Config) error {
-	baseDir := filepath.Join("output", config.Version, config.Architecture)
+func EnsureOutputDirs(outputDir string, config *Config) error {
+	baseDir := filepath.Join(outputDir, config.Version, config.Architecture)
 	fetchDir := filepath.Join(baseDir, "fetch")
 	combineDir := filepath.Join(baseDir, "combine")
 
@@ -77,14 +77,19 @@ func EnsureOutputDirs(config *Config) error {
 	return nil
 }
 
-func GetFetchDir(config *Config, component *Component) string {
-	return filepath.Join("output", config.Version, config.Architecture, "fetch", component.Directory)
+func GetFetchDir(outputDir string, config *Config, component *Component) string {
+	return filepath.Join(outputDir, config.Version, config.Architecture, "fetch", component.Directory)
 }
 
-func GetCombineDir(config *Config) string {
-	return filepath.Join("output", config.Version, config.Architecture, "combine")
+func GetCombineDir(outputDir string, config *Config) string {
+	return filepath.Join(outputDir, config.Version, config.Architecture, "combine")
 }
 
-func GetCombinedFilePath(config *Config, component *Component) string {
-	return filepath.Join(GetCombineDir(config), component.FilePrefix+".tgz")
+func GetCombinedFilePath(outputDir string, config *Config, component *Component) string {
+	return filepath.Join(GetCombineDir(outputDir, config), component.FilePrefix+".tgz")
+}
+
+func fileExists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
 }

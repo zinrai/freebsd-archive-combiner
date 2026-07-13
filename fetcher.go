@@ -1,4 +1,4 @@
-package fetcher
+package main
 
 import (
 	"fmt"
@@ -7,19 +7,17 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-
-	"github.com/zinrai/freebsd-archive-combiner/pkg/config"
 )
 
-func FetchSplitFiles(cfg *config.Config, component *config.Component) error {
-	combinedFilePath := config.GetCombinedFilePath(cfg, component)
+func FetchSplitFiles(outputDir string, cfg *Config, component *Component) error {
+	combinedFilePath := GetCombinedFilePath(outputDir, cfg, component)
 
 	if fileExists(combinedFilePath) {
 		fmt.Printf("Combined file already exists: %s\n", combinedFilePath)
 		return nil
 	}
 
-	fetchDir := config.GetFetchDir(cfg, component)
+	fetchDir := GetFetchDir(outputDir, cfg, component)
 
 	baseURL := fmt.Sprintf("%s/%s/%s/%s",
 		cfg.ArchiveURL,
@@ -119,9 +117,4 @@ func downloadFile(destPath, url string) error {
 	}
 
 	return os.Rename(tmpFile, destPath)
-}
-
-func fileExists(filepath string) bool {
-	_, err := os.Stat(filepath)
-	return err == nil
 }

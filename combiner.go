@@ -1,4 +1,4 @@
-package combiner
+package main
 
 import (
 	"fmt"
@@ -7,19 +7,17 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-
-	"github.com/zinrai/freebsd-archive-combiner/pkg/config"
 )
 
-func CombineSplitFiles(cfg *config.Config, component *config.Component) error {
-	combinedFilePath := config.GetCombinedFilePath(cfg, component)
+func CombineSplitFiles(outputDir string, cfg *Config, component *Component) error {
+	combinedFilePath := GetCombinedFilePath(outputDir, cfg, component)
 
 	if fileExists(combinedFilePath) {
 		fmt.Printf("Combined file already exists: %s\n", combinedFilePath)
 		return nil
 	}
 
-	fetchDir := config.GetFetchDir(cfg, component)
+	fetchDir := GetFetchDir(outputDir, cfg, component)
 
 	fmt.Printf("Combining files for component: %s\n", component.Directory)
 	fmt.Printf("Source directory: %s\n", fetchDir)
@@ -95,9 +93,4 @@ func combineFiles(files []string, outputPath string) error {
 	}
 
 	return nil
-}
-
-func fileExists(filepath string) bool {
-	_, err := os.Stat(filepath)
-	return err == nil
 }

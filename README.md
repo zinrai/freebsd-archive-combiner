@@ -10,19 +10,13 @@
 - Support for multiple components (base, kernel, etc.)
 - Reuses existing files (avoids redundant downloads)
 
-## Installation
-
-```bash
-$ go build -o freebsd-archive-combiner cmd/main.go
-```
-
 ## Usage
 
 1. Create a YAML configuration file (see the sample in `examples/8.4-RELEASE.yaml`)
 2. Run the following command:
 
 ```bash
-$ ./freebsd-archive-combiner -c examples/8.4-RELEASE.yaml
+$ ./freebsd-archive-combiner -config examples/8.4-RELEASE.yaml
 ```
 
 ## Output Directory Structure
